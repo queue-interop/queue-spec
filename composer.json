@@ -1,0 +1,18 @@
+{
+    "name": "queue-interop/queue-spec",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "queue-interop/queue-interop": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Interop\\Queue\\Spec": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5.x-dev"
+        }
+    }
+}
