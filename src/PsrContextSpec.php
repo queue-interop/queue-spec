@@ -55,10 +55,10 @@ abstract class PsrContextSpec extends TestCase
     {
         $context = $this->createContext();
 
-        $topic = $context->createTopic('theName');
+        $queue = $context->createTopic('theName');
 
-        $this->assertInstanceOf(PsrQueue::class, $topic);
-        $this->assertSame('theName', $topic->getTopicName());
+        $this->assertInstanceOf(PsrQueue::class, $queue);
+        $this->assertSame('theName', $queue->getQueueName());
     }
 
     public function testShouldCreateProducerOnCreateProducerMethodCall()
