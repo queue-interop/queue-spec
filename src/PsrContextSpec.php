@@ -55,7 +55,7 @@ abstract class PsrContextSpec extends TestCase
     {
         $context = $this->createContext();
 
-        $queue = $context->createTopic('theName');
+        $queue = $context->createQueue('theName');
 
         $this->assertInstanceOf(PsrQueue::class, $queue);
         $this->assertSame('theName', $queue->getQueueName());
