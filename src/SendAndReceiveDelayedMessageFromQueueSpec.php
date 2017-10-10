@@ -36,7 +36,7 @@ abstract class SendAndReceiveDelayedMessageFromQueueSpec extends TestCase
         $consumer->acknowledge($message);
         $this->assertSame($expectedBody, $message->getBody());
 
-        $this->assertGreaterThanOrEqual(5, microtime(true) - $sendAt);
+        $this->assertGreaterThanOrEqual(4, microtime(true) - $sendAt);
     }
 
     /**
