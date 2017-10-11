@@ -30,6 +30,8 @@ abstract class BasicConsumeShouldAddConsumerTagOnSubscribeSpec extends TestCase
     public function test()
     {
         $this->context = $context = $this->createContext();
+        $context->setQos(0, 5, false);
+
         $queue = $this->createQueue($context, 'basic_consume_should_add_consumer_tag_on_subscribe_spec');
 
         $consumer = $context->createConsumer($queue);

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @group functional
  */
-abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends TestCase
+abstract class PreFetchCountSpec extends TestCase
 {
     /**
      * @var AmqpContext
@@ -30,21 +30,25 @@ abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends Test
     public function test()
     {
         $this->context = $context = $this->createContext();
-        $context->setQos(0, 5, false);
+        $queue = $this->createQueue($context, 'pre_fetch_count_spec');
 
-        $queue = $this->createQueue($context, 'basic_consume_should_remove_consumer_tag_on_unsubscribe_spec');
+        $context->createProducer()->send($queue, $context->createMessage());
+        $context->createProducer()->send($queue, $context->createMessage());
+        $context->createProducer()->send($queue, $context->createMessage());
+        $context->createProducer()->send($queue, $context->createMessage());
+        $context->createProducer()->send($queue, $context->createMessage());
+
+        $this->context->setQos(0, 3, false);
 
         $consumer = $context->createConsumer($queue);
 
-        $context->subscribe($consumer, function() {});
+        $consumedMessages = 0;
+        $context->subscribe($consumer, function() use (&$consumedMessages) {
+            $consumedMessages++;
+        });
         $context->consume(100);
 
-        // guard
-        $this->assertNotEmpty($consumer->getConsumerTag());
-
-        $context->unsubscribe($consumer);
-
-        $this->assertEmpty($consumer->getConsumerTag());
+        $this->assertEquals(3, $consumedMessages);
     }
 
     /**

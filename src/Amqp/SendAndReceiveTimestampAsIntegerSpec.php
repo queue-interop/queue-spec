@@ -2,7 +2,6 @@
 
 namespace Interop\Queue\Spec\Amqp;
 
-use Interop\Amqp\AmqpConsumer;
 use Interop\Amqp\AmqpContext;
 use Interop\Amqp\AmqpMessage;
 use Interop\Amqp\AmqpQueue;
@@ -11,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @group functional
  */
-abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends TestCase
+abstract class SendAndReceiveTimestampAsIntegerSpec extends TestCase
 {
     /**
      * @var AmqpContext
@@ -30,21 +29,24 @@ abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends Test
     public function test()
     {
         $this->context = $context = $this->createContext();
-        $context->setQos(0, 5, false);
 
-        $queue = $this->createQueue($context, 'basic_consume_should_remove_consumer_tag_on_unsubscribe_spec');
+        $queue = $this->createQueue($context, 'send_and_receive_timestamp_as_integer_spec');
+
+        $expectedTime = time();
+        $expectedBody = __METHOD__.time();
+
+        $message = $context->createMessage($expectedBody);
+        $message->setTimestamp($expectedTime);
+
+        $context->createProducer()->send($queue, $message);
 
         $consumer = $context->createConsumer($queue);
 
-        $context->subscribe($consumer, function() {});
-        $context->consume(100);
+        $receivedMessage = $consumer->receive(100);
 
-        // guard
-        $this->assertNotEmpty($consumer->getConsumerTag());
-
-        $context->unsubscribe($consumer);
-
-        $this->assertEmpty($consumer->getConsumerTag());
+        $this->assertInstanceOf(AmqpMessage::class, $receivedMessage);
+        $this->assertSame($expectedBody, $receivedMessage->getBody());
+        $this->assertSame($expectedTime, $receivedMessage->getTimestamp());
     }
 
     /**

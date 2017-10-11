@@ -30,6 +30,8 @@ abstract class BasicConsumeBreakOnFalseSpec extends TestCase
     public function test()
     {
         $this->context = $context = $this->createContext();
+        $context->setQos(0, 5, false);
+
         $fooQueue = $this->createQueue($context, 'foo_basic_consume_break_on_false_spec');
         $barQueue = $this->createQueue($context, 'bar_basic_consume_break_on_false_spec');
 
