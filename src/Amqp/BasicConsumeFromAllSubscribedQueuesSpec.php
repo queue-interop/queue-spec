@@ -65,6 +65,9 @@ abstract class BasicConsumeFromAllSubscribedQueuesSpec extends TestCase
             ],
             $actualQueues
         );
+
+        $this->assertEquals(0, $context->declareQueue($fooQueue));
+        $this->assertEquals(0, $context->declareQueue($barQueue));
     }
 
     /**
