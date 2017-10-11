@@ -34,13 +34,13 @@ abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends Test
 
         $consumer = $context->createConsumer($queue);
 
-        $context->basicConsumeSubscribe($consumer, function() {});
-        $context->basicConsume(100);
+        $context->subscribe($consumer, function() {});
+        $context->consume(100);
 
         // guard
         $this->assertNotEmpty($consumer->getConsumerTag());
 
-        $context->basicConsumeUnsubscribe($consumer);
+        $context->unsubscribe($consumer);
 
         $this->assertEmpty($consumer->getConsumerTag());
     }

@@ -34,7 +34,7 @@ abstract class BasicConsumeShouldAddConsumerTagOnSubscribeSpec extends TestCase
 
         $consumer = $context->createConsumer($queue);
 
-        $context->basicConsumeSubscribe($consumer, function() {});
+        $context->subscribe($consumer, function() {});
 
         $this->assertNotEmpty($consumer->getConsumerTag());
     }

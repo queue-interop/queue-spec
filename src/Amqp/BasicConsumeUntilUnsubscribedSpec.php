@@ -48,9 +48,9 @@ abstract class BasicConsumeUntilUnsubscribedSpec extends TestCase
             return true;
         };
 
-        $context->basicConsumeSubscribe($fooConsumer, $callback);
-        $context->basicConsumeSubscribe($barConsumer, $callback);
-        $context->basicConsume(1000);
+        $context->subscribe($fooConsumer, $callback);
+        $context->subscribe($barConsumer, $callback);
+        $context->consume(1000);
 
         $this->assertEquals(2, $consumedMessages);
 
@@ -58,8 +58,8 @@ abstract class BasicConsumeUntilUnsubscribedSpec extends TestCase
         $context->createProducer()->send($barQueue, $context->createMessage());
 
         $consumedMessages = 0;
-        $context->basicConsumeUnsubscribe($fooConsumer);
-        $context->basicConsume(1000);
+        $context->unsubscribe($fooConsumer);
+        $context->consume(1000);
 
         $this->assertEquals(1, $consumedMessages);
     }

@@ -53,9 +53,9 @@ abstract class BasicConsumeFromAllSubscribedQueuesSpec extends TestCase
             return true;
         };
 
-        $context->basicConsumeSubscribe($fooConsumer, $callback);
-        $context->basicConsumeSubscribe($barConsumer, $callback);
-        $context->basicConsume(1000);
+        $context->subscribe($fooConsumer, $callback);
+        $context->subscribe($barConsumer, $callback);
+        $context->consume(1000);
 
         $this->assertEquals([$expectedFooBody, $expectedBarBody], $actualBodies);
         $this->assertEquals(
