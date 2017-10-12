@@ -12,9 +12,23 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class SendToAndReceiveNoWaitFromQueueSpec extends TestCase
 {
+    /**
+     * @var PsrContext
+     */
+    private $context;
+
+    protected function tearDown()
+    {
+        if ($this->context) {
+            $this->context->close();
+        }
+
+        parent::tearDown();
+    }
+
     public function test()
     {
-        $context = $this->createContext();
+        $this->context = $context = $this->createContext();
         $queue = $this->createQueue($context, 'send_to_and_receive_no_wait_from_queue_spec');
 
         $consumer = $context->createConsumer($queue);

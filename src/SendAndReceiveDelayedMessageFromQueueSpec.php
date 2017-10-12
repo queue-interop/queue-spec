@@ -12,9 +12,23 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class SendAndReceiveDelayedMessageFromQueueSpec extends TestCase
 {
+    /**
+     * @var PsrContext
+     */
+    private $context;
+
+    protected function tearDown()
+    {
+        if ($this->context) {
+            $this->context->close();
+        }
+
+        parent::tearDown();
+    }
+
     public function test()
     {
-        $context = $this->createContext();
+        $this->context = $context = $this->createContext();
         $queue = $this->createQueue($context, 'send_and_receive_delayed_message_from_queue_spec');
 
         $consumer = $context->createConsumer($queue);

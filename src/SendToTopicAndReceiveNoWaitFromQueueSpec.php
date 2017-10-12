@@ -13,9 +13,23 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class SendToTopicAndReceiveNoWaitFromQueueSpec extends TestCase
 {
+    /**
+     * @var PsrContext
+     */
+    private $context;
+
+    protected function tearDown()
+    {
+        if ($this->context) {
+            $this->context->close();
+        }
+
+        parent::tearDown();
+    }
+
     public function test()
     {
-        $context = $this->createContext();
+        $this->context = $context = $this->createContext();
         $topic = $this->createTopic($context, 'send_to_topic_and_receive_from_queue_spec');
         $queue = $this->createQueue($context, 'send_to_topic_and_receive_from_queue_spec');
 

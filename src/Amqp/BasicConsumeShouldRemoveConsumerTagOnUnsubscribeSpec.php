@@ -18,7 +18,7 @@ abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends Test
      */
     private $context;
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->context) {
             $this->context->close();

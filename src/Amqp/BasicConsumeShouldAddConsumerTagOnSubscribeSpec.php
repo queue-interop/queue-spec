@@ -18,7 +18,7 @@ abstract class BasicConsumeShouldAddConsumerTagOnSubscribeSpec extends TestCase
      */
     private $context;
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->context) {
             $this->context->close();
