@@ -42,10 +42,10 @@ abstract class SendAndReceivePriorityMessagesFromQueueSpec extends TestCase
         $producer = $context->createProducer();
 
         $producer->setPriority(1);
-        $producer->send($queue, $context->createMessage($expectedPriority1Body));
+        $producer->send($queue, $this->createMessage($context, $expectedPriority1Body));
 
         $producer->setPriority(5);
-        $producer->send($queue, $context->createMessage($expectedPriority5Body));
+        $producer->send($queue, $this->createMessage($context, $expectedPriority5Body));
 
         $message = $consumer->receive(8000); // 8 sec
 
@@ -64,6 +64,17 @@ abstract class SendAndReceivePriorityMessagesFromQueueSpec extends TestCase
      * @return PsrContext
      */
     abstract protected function createContext();
+
+    /**
+     * @param PsrContext $context
+     * @param string $body
+     *
+     * @return PsrMessage
+     */
+    protected function createMessage(PsrContext $context, $body)
+    {
+        return $context->createMessage($body);
+    }
 
     /**
      * @param PsrContext $context
