@@ -6,6 +6,7 @@ use Interop\Queue\PsrConsumer;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
+use Interop\Queue\PsrSubscriptionConsumer;
 use Interop\Queue\PsrSubscriptionConsumerAwareContext;
 use PHPUnit\Framework\TestCase;
 
@@ -18,6 +19,11 @@ abstract class SubscriptionConsumerConsumeUntilUnsubscribedSpec extends TestCase
      * @var PsrContext
      */
     private $context;
+
+    /**
+     * @var PsrSubscriptionConsumer
+     */
+    protected $subscriptionConsumer;
 
     protected function tearDown()
     {
@@ -50,7 +56,7 @@ abstract class SubscriptionConsumerConsumeUntilUnsubscribedSpec extends TestCase
             return true;
         };
 
-        $subscriptionConsumer = $context->createSubscriptionConsumer();
+        $this->subscriptionConsumer = $subscriptionConsumer = $context->createSubscriptionConsumer();
         $subscriptionConsumer->subscribe($fooConsumer, $callback);
         $subscriptionConsumer->subscribe($barConsumer, $callback);
 
@@ -58,11 +64,12 @@ abstract class SubscriptionConsumerConsumeUntilUnsubscribedSpec extends TestCase
 
         $this->assertEquals(2, $consumedMessages);
 
+        $subscriptionConsumer->unsubscribe($fooConsumer);
+
         $context->createProducer()->send($fooQueue, $context->createMessage());
         $context->createProducer()->send($barQueue, $context->createMessage());
 
         $consumedMessages = 0;
-        $subscriptionConsumer->unsubscribe($fooConsumer);
         $subscriptionConsumer->consume(1000);
 
         $this->assertEquals(1, $consumedMessages);
