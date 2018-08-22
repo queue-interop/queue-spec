@@ -2,16 +2,14 @@
 
 namespace Interop\Queue\Spec\Amqp;
 
-use Interop\Amqp\AmqpConsumer;
 use Interop\Amqp\AmqpContext;
-use Interop\Amqp\AmqpMessage;
 use Interop\Amqp\AmqpQueue;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @group functional
  */
-abstract class BasicConsumeShouldAddConsumerTagOnSubscribeSpec extends TestCase
+abstract class SubscriptionConsumerAddConsumerTagOnSubscribeSpec extends TestCase
 {
     /**
      * @var AmqpContext
@@ -32,27 +30,23 @@ abstract class BasicConsumeShouldAddConsumerTagOnSubscribeSpec extends TestCase
         $this->context = $context = $this->createContext();
         $context->setQos(0, 5, false);
 
-        $queue = $this->createQueue($context, 'basic_consume_should_add_consumer_tag_on_subscribe_spec');
+        $queue = $this->createQueue($context, 'amqp_subscription_consumer_add_consumer_tag_on_subscribe_spec');
 
         $consumer = $context->createConsumer($queue);
 
-        $context->subscribe($consumer, function() {});
+        //guard
+        $this->assertNull($consumer->getConsumerTag());
+
+        $subscriptionConsumer = $context->createSubscriptionConsumer();
+
+        $subscriptionConsumer->subscribe($consumer, function() {});
 
         $this->assertNotEmpty($consumer->getConsumerTag());
     }
 
-    /**
-     * @return AmqpContext
-     */
-    abstract protected function createContext();
+    abstract protected function createContext(): AmqpContext;
 
-    /**
-     * @param AmqpContext $context
-     * @param string      $queueName
-     *
-     * @return AmqpQueue
-     */
-    protected function createQueue(AmqpContext $context, $queueName)
+    protected function createQueue(AmqpContext $context, string $queueName): AmqpQueue
     {
         $queue = $context->createQueue($queueName);
         $context->declareQueue($queue);

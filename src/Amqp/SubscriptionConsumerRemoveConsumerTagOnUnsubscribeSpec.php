@@ -2,16 +2,14 @@
 
 namespace Interop\Queue\Spec\Amqp;
 
-use Interop\Amqp\AmqpConsumer;
 use Interop\Amqp\AmqpContext;
-use Interop\Amqp\AmqpMessage;
 use Interop\Amqp\AmqpQueue;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @group functional
  */
-abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends TestCase
+abstract class SubscriptionConsumerRemoveConsumerTagOnUnsubscribeSpec extends TestCase
 {
     /**
      * @var AmqpContext
@@ -36,29 +34,21 @@ abstract class BasicConsumeShouldRemoveConsumerTagOnUnsubscribeSpec extends Test
 
         $consumer = $context->createConsumer($queue);
 
-        $context->subscribe($consumer, function() {});
-        $context->consume(100);
+        $subscriptionConsumer = $context->createSubscriptionConsumer();
+        $subscriptionConsumer->subscribe($consumer, function() {});
+        $subscriptionConsumer->consume(100);
 
         // guard
         $this->assertNotEmpty($consumer->getConsumerTag());
 
-        $context->unsubscribe($consumer);
+        $subscriptionConsumer->unsubscribe($consumer);
 
         $this->assertEmpty($consumer->getConsumerTag());
     }
 
-    /**
-     * @return AmqpContext
-     */
-    abstract protected function createContext();
+    abstract protected function createContext(): AmqpContext;
 
-    /**
-     * @param AmqpContext $context
-     * @param string      $queueName
-     *
-     * @return AmqpQueue
-     */
-    protected function createQueue(AmqpContext $context, $queueName)
+    protected function createQueue(AmqpContext $context, string $queueName): AmqpQueue
     {
         $queue = $context->createQueue($queueName);
         $context->declareQueue($queue);

@@ -6,7 +6,6 @@ use Interop\Queue\PsrConsumer;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
-use Interop\Queue\PsrSubscriptionConsumerAwareContext;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,7 +62,7 @@ abstract class SubscriptionConsumerStopOnFalseSpec extends TestCase
     }
 
     /**
-     * @return PsrContext|PsrSubscriptionConsumerAwareContext
+     * @return PsrContext
      */
     abstract protected function createContext();
 

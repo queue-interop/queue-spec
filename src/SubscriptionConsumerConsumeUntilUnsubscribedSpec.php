@@ -7,7 +7,6 @@ use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
 use Interop\Queue\PsrSubscriptionConsumer;
-use Interop\Queue\PsrSubscriptionConsumerAwareContext;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -76,7 +75,7 @@ abstract class SubscriptionConsumerConsumeUntilUnsubscribedSpec extends TestCase
     }
 
     /**
-     * @return PsrContext|PsrSubscriptionConsumerAwareContext
+     * @return PsrContext
      */
     abstract protected function createContext();
 
