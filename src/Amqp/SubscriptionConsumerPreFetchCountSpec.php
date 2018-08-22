@@ -2,16 +2,14 @@
 
 namespace Interop\Queue\Spec\Amqp;
 
-use Interop\Amqp\AmqpConsumer;
 use Interop\Amqp\AmqpContext;
-use Interop\Amqp\AmqpMessage;
 use Interop\Amqp\AmqpQueue;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @group functional
  */
-abstract class PreFetchCountSpec extends TestCase
+abstract class SubscriptionConsumerPreFetchCountSpec extends TestCase
 {
     /**
      * @var AmqpContext
@@ -42,27 +40,20 @@ abstract class PreFetchCountSpec extends TestCase
 
         $consumer = $context->createConsumer($queue);
 
+        $subscriptionConsumer = $context->createSubscriptionConsumer();
+
         $consumedMessages = 0;
-        $context->subscribe($consumer, function() use (&$consumedMessages) {
+        $subscriptionConsumer->subscribe($consumer, function() use (&$consumedMessages) {
             $consumedMessages++;
         });
-        $context->consume(100);
+        $subscriptionConsumer->consume(100);
 
         $this->assertEquals(3, $consumedMessages);
     }
 
-    /**
-     * @return AmqpContext
-     */
-    abstract protected function createContext();
+    abstract protected function createContext(): AmqpContext;
 
-    /**
-     * @param AmqpContext $context
-     * @param string      $queueName
-     *
-     * @return AmqpQueue
-     */
-    protected function createQueue(AmqpContext $context, $queueName)
+    protected function createQueue(AmqpContext $context, string $queueName): AmqpQueue
     {
         $queue = $context->createQueue($queueName);
         $context->declareQueue($queue);
