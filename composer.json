@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "queue-interop/queue-interop": "^0.5|^0.6|^0.7|^1.0.0-alpha1"
+        "queue-interop/queue-interop": "0.7.x-dev"
     },
     "autoload": {
         "psr-4": {
@@ -12,7 +12,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.6.x-dev"
         }
     }
 }
