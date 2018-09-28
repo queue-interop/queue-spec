@@ -2,16 +2,16 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrQueue;
+use Interop\Queue\Queue;
 use PHPUnit\Framework\TestCase;
 
-abstract class PsrQueueSpec extends TestCase
+abstract class QueueSpec extends TestCase
 {
     const EXPECTED_QUEUE_NAME = 'theQueueName';
 
     public function testShouldImplementQueueInterface()
     {
-        $this->assertInstanceOf(PsrQueue::class, $this->createQueue());
+        $this->assertInstanceOf(Queue::class, $this->createQueue());
     }
 
     public function testShouldReturnQueueName()
@@ -22,7 +22,7 @@ abstract class PsrQueueSpec extends TestCase
     }
 
     /**
-     * @return PsrQueue
+     * @return Queue
      */
     abstract protected function createQueue();
 }

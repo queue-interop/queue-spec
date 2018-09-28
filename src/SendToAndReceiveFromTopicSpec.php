@@ -2,9 +2,9 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrTopic;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Topic;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 abstract class SendToAndReceiveFromTopicSpec extends TestCase
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -42,24 +42,24 @@ abstract class SendToAndReceiveFromTopicSpec extends TestCase
 
         $message = $consumer->receive(2000); // 2 sec
 
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $consumer->acknowledge($message);
 
         $this->assertSame($expectedBody, $message->getBody());
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $topicName
      *
-     * @return PsrTopic
+     * @return Topic
      */
-    protected function createTopic(PsrContext $context, $topicName)
+    protected function createTopic(Context $context, $topicName)
     {
         return $context->createTopic($topicName);
     }

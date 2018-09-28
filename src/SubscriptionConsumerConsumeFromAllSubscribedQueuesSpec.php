@@ -2,10 +2,10 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrConsumer;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrQueue;
+use Interop\Queue\Consumer;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Queue;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 abstract class SubscriptionConsumerConsumeFromAllSubscribedQueuesSpec extends TestCase
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -45,7 +45,7 @@ abstract class SubscriptionConsumerConsumeFromAllSubscribedQueuesSpec extends Te
 
         $actualBodies = [];
         $actualQueues = [];
-        $callback = function(PsrMessage $message, PsrConsumer $consumer) use (&$actualBodies, &$actualQueues) {
+        $callback = function(Message $message, Consumer $consumer) use (&$actualBodies, &$actualQueues) {
             $actualBodies[] = $message->getBody();
             $actualQueues[] = $consumer->getQueue()->getQueueName();
 
@@ -71,17 +71,17 @@ abstract class SubscriptionConsumerConsumeFromAllSubscribedQueuesSpec extends Te
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $queueName
      *
-     * @return PsrQueue
+     * @return Queue
      */
-    protected function createQueue(PsrContext $context, $queueName)
+    protected function createQueue(Context $context, $queueName)
     {
         return $context->createQueue($queueName);
     }

@@ -2,10 +2,10 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrConsumer;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrQueue;
+use Interop\Queue\Consumer;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Queue;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 abstract class SubscriptionConsumerStopOnFalseSpec extends TestCase
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -41,7 +41,7 @@ abstract class SubscriptionConsumerStopOnFalseSpec extends TestCase
         $context->createProducer()->send($barQueue, $context->createMessage($expectedBarBody));
 
         $consumedMessages = 0;
-        $callback = function(PsrMessage $message, PsrConsumer $consumer) use (&$consumedMessages) {
+        $callback = function(Message $message, Consumer $consumer) use (&$consumedMessages) {
             $consumedMessages++;
 
             $consumer->acknowledge($message);
@@ -62,17 +62,17 @@ abstract class SubscriptionConsumerStopOnFalseSpec extends TestCase
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $queueName
      *
-     * @return PsrQueue
+     * @return Queue
      */
-    protected function createQueue(PsrContext $context, $queueName)
+    protected function createQueue(Context $context, $queueName)
     {
         return $context->createQueue($queueName);
     }

@@ -2,14 +2,14 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrMessage;
+use Interop\Queue\Message;
 use PHPUnit\Framework\TestCase;
 
-abstract class PsrMessageSpec extends TestCase
+abstract class MessageSpec extends TestCase
 {
     public function testShouldImplementMessageInterface()
     {
-        $this->assertInstanceOf(PsrMessage::class, $this->createMessage());
+        $this->assertInstanceOf(Message::class, $this->createMessage());
     }
 
     public function testShouldSetRedeliveredToFalseInConstructor()
@@ -186,7 +186,7 @@ abstract class PsrMessageSpec extends TestCase
     }
 
     /**
-     * @return PsrMessage
+     * @return Message
      */
     abstract protected function createMessage();
 }

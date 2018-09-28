@@ -2,19 +2,19 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrConsumer;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProducer;
-use Interop\Queue\PsrQueue;
-use Interop\Queue\PsrTopic;
+use Interop\Queue\Consumer;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Producer;
+use Interop\Queue\Queue;
+use Interop\Queue\Topic;
 use PHPUnit\Framework\TestCase;
 
-abstract class PsrContextSpec extends TestCase
+abstract class ContextSpec extends TestCase
 {
-    public function testShouldImplementPsrContextInterface()
+    public function testShouldImplementContextInterface()
     {
-        $this->assertInstanceOf(PsrContext::class, $this->createContext());
+        $this->assertInstanceOf(Context::class, $this->createContext());
     }
 
     public function testShouldCreateEmptyMessageOnCreateMessageMethodCallWithoutArguments()
@@ -23,7 +23,7 @@ abstract class PsrContextSpec extends TestCase
 
         $message = $context->createMessage();
 
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $this->assertSame('', $message->getBody());
         $this->assertSame([], $message->getHeaders());
         $this->assertSame([], $message->getProperties());
@@ -35,7 +35,7 @@ abstract class PsrContextSpec extends TestCase
 
         $message = $context->createMessage('theBody', ['foo' => 'fooVal'], ['bar' => 'barVal']);
 
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $this->assertSame('theBody', $message->getBody());
         $this->assertSame(['bar' => 'barVal'], $message->getHeaders());
         $this->assertSame(['foo' => 'fooVal'], $message->getProperties());
@@ -47,7 +47,7 @@ abstract class PsrContextSpec extends TestCase
 
         $topic = $context->createTopic('theName');
 
-        $this->assertInstanceOf(PsrTopic::class, $topic);
+        $this->assertInstanceOf(Topic::class, $topic);
         $this->assertSame('theName', $topic->getTopicName());
     }
 
@@ -57,7 +57,7 @@ abstract class PsrContextSpec extends TestCase
 
         $queue = $context->createQueue('theName');
 
-        $this->assertInstanceOf(PsrQueue::class, $queue);
+        $this->assertInstanceOf(Queue::class, $queue);
         $this->assertSame('theName', $queue->getQueueName());
     }
 
@@ -67,7 +67,7 @@ abstract class PsrContextSpec extends TestCase
 
         $producer = $context->createProducer();
 
-        $this->assertInstanceOf(PsrProducer::class, $producer);
+        $this->assertInstanceOf(Producer::class, $producer);
     }
 
     public function testShouldCreateConsumerOnCreateConsumerMethodCall()
@@ -76,11 +76,11 @@ abstract class PsrContextSpec extends TestCase
 
         $consumer = $context->createConsumer($context->createQueue('aQueue'));
 
-        $this->assertInstanceOf(PsrConsumer::class, $consumer);
+        $this->assertInstanceOf(Consumer::class, $consumer);
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 }

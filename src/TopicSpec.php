@@ -2,16 +2,16 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrTopic;
+use Interop\Queue\Topic;
 use PHPUnit\Framework\TestCase;
 
-abstract class PsrTopicSpec extends TestCase
+abstract class TopicSpec extends TestCase
 {
     const EXPECTED_TOPIC_NAME = 'theTopicName';
 
     public function testShouldImplementTopicInterface()
     {
-        $this->assertInstanceOf(PsrTopic::class, $this->createTopic());
+        $this->assertInstanceOf(Topic::class, $this->createTopic());
     }
 
     public function testShouldReturnTopicName()
@@ -22,7 +22,7 @@ abstract class PsrTopicSpec extends TestCase
     }
 
     /**
-     * @return PsrTopic
+     * @return Topic
      */
     abstract protected function createTopic();
 }

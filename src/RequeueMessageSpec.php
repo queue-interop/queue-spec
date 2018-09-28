@@ -2,10 +2,10 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrQueue;
-use Interop\Queue\PsrTopic;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Queue;
+use Interop\Queue\Topic;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 abstract class RequeueMessageSpec extends TestCase
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -42,39 +42,39 @@ abstract class RequeueMessageSpec extends TestCase
         $context->createProducer()->send($queue, $context->createMessage($expectedBody));
 
         $message = $consumer->receive(2000);
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $consumer->reject($message, true);
 
         $requeuedMessage = $message = $consumer->receive(2000);
-        $this->assertInstanceOf(PsrMessage::class, $requeuedMessage);
+        $this->assertInstanceOf(Message::class, $requeuedMessage);
         $consumer->acknowledge($message);
 
         $this->assertSame($expectedBody, $requeuedMessage->getBody());
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $queueName
      *
-     * @return PsrQueue
+     * @return Queue
      */
-    protected function createQueue(PsrContext $context, $queueName)
+    protected function createQueue(Context $context, $queueName)
     {
         return $context->createQueue($queueName);
     }
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $topicName
      *
-     * @return PsrTopic
+     * @return Topic
      */
-    protected function createTopic(PsrContext $context, $topicName)
+    protected function createTopic(Context $context, $topicName)
     {
         return $context->createTopic($topicName);
     }

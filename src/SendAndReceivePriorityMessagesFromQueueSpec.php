@@ -2,9 +2,9 @@
 
 namespace Interop\Queue\Spec;
 
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrQueue;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Queue;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 abstract class SendAndReceivePriorityMessagesFromQueueSpec extends TestCase
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -49,40 +49,40 @@ abstract class SendAndReceivePriorityMessagesFromQueueSpec extends TestCase
 
         $message = $consumer->receive(8000); // 8 sec
 
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $consumer->acknowledge($message);
         $this->assertSame($expectedPriority5Body, $message->getBody());
 
         $message = $consumer->receive(8000); // 8 sec
 
-        $this->assertInstanceOf(PsrMessage::class, $message);
+        $this->assertInstanceOf(Message::class, $message);
         $consumer->acknowledge($message);
         $this->assertSame($expectedPriority1Body, $message->getBody());
     }
 
     /**
-     * @return PsrContext
+     * @return Context
      */
     abstract protected function createContext();
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string $body
      *
-     * @return PsrMessage
+     * @return Message
      */
-    protected function createMessage(PsrContext $context, $body)
+    protected function createMessage(Context $context, $body)
     {
         return $context->createMessage($body);
     }
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      * @param string     $queueName
      *
-     * @return PsrQueue
+     * @return Queue
      */
-    protected function createQueue(PsrContext $context, $queueName)
+    protected function createQueue(Context $context, $queueName)
     {
         return $context->createQueue($queueName);
     }
