@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "queue-interop/queue-interop": "0.7.x-dev"
+        "queue-interop/queue-interop": "^0.7"
     },
     "autoload": {
         "psr-4": {
