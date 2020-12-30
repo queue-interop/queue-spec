@@ -18,7 +18,7 @@ abstract class SubscriptionConsumerConsumeFromAllSubscribedQueuesSpec extends Te
      */
     private $context;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->context) {
             $this->context->close();
