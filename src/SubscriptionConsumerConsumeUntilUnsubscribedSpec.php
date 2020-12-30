@@ -24,7 +24,7 @@ abstract class SubscriptionConsumerConsumeUntilUnsubscribedSpec extends TestCase
      */
     protected $subscriptionConsumer;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->context) {
             $this->context->close();

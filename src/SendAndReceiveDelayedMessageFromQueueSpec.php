@@ -17,7 +17,7 @@ abstract class SendAndReceiveDelayedMessageFromQueueSpec extends TestCase
      */
     private $context;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->context) {
             $this->context->close();
